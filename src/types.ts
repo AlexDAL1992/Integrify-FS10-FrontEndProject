@@ -1,7 +1,12 @@
-// Action types
+// Product action types
 export const ADD_PRODUCT = 'ADD_PRODUCT'
 export const REMOVE_PRODUCT = 'REMOVE_PRODUCT'
 export const TOGGLE_DIALOG = 'TOGGLE_DIALOG'
+
+// Country action types
+export const FETCH_ALL_COUNTRIES = 'FETCH_ALL_COUNTRIES'
+export const FETCH_ALL_COUNTRIES_SUCCESS = 'FETCH_ALL_COUNTRIES_SUCCESS'
+export const FETCH_ALL_COUNTRIES_FAILURE = 'FETCH_ALL_COUNTRIES_FAILURE'
 
 // Enum
 export enum DialogType {
@@ -9,7 +14,7 @@ export enum DialogType {
   SignUp = 'signUp',
 }
 
-// A product
+// Product type and its action types
 export type Product = {
   id: string
   name: string
@@ -19,33 +24,64 @@ export type Product = {
 export type AddProductAction = {
   type: typeof ADD_PRODUCT
   payload: {
-    product: Product,
+    product: Product
   }
 }
 
 export type RemoveProductAction = {
   type: typeof REMOVE_PRODUCT
   payload: {
-    product: Product,
+    product: Product
   }
 }
 
 export type ToggleDialogAction = {
   type: typeof TOGGLE_DIALOG
   payload: {
-    dialog: DialogType,
+    dialog: DialogType
   }
 }
 
 export type UiActions = ToggleDialogAction
 
-// Use this union in reducer
-export type ProductActions =
-  | AddProductAction
-  | RemoveProductAction
+// Country type and its action types
+export type Country = {
+  id: string
+  name: string
+}
 
+export type FetchAllCountriesAction = {
+  type: typeof FETCH_ALL_COUNTRIES
+  payload?: string
+}
+
+export type FetchAllCountriesSuccessAction = {
+  type: typeof FETCH_ALL_COUNTRIES_SUCCESS
+  payload: Country[]
+}
+
+export type FetchAllCountriesFailureAction = {
+  type: typeof FETCH_ALL_COUNTRIES_FAILURE
+  payload: string
+}
+
+// Use this union in reducer
+export type ProductActions = AddProductAction | RemoveProductAction
+
+export type CountriesAction =
+  | FetchAllCountriesAction
+  | FetchAllCountriesSuccessAction
+  | FetchAllCountriesFailureAction
+
+// state types
 export type ProductState = {
   inCart: Product[]
+}
+
+export type CountryState = {
+  countries: Country[]
+  isLoading: boolean
+  error: string
 }
 
 // Using dynamic keys from an enum
@@ -56,6 +92,7 @@ export type UiState = {
 }
 
 export type AppState = {
-  product: ProductState,
-  ui: UiState,
+  product: ProductState
+  ui: UiState
+  country: CountryState
 }
