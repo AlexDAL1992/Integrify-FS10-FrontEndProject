@@ -47,7 +47,11 @@ export type UiActions = ToggleDialogAction
 // Country type and its action types
 export type Country = {
   id: string
+  flag: string
   name: string
+  languages: string[]
+  population: number
+  region: string
 }
 
 export type FetchAllCountriesAction = {

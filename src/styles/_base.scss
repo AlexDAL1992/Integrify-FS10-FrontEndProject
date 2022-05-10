@@ -1,0 +1,40 @@
+@import './reset';
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap');
+
+$font-family: 'Noto Sans', sans-serif;
+
+$primary: #3d89e9;
+$primaryHover: #1f7aed;
+$black: #15181f;
+$lightGray: #f6f7f9;
+$lightBlue: #dbffff;
+$lightBlack: #898b8e;
+
+$max-width: 1040px;
+:root {
+  font-size: 16px;
+  font-weight: weight(regular);
+  font-family: $font-family;
+}
+.container{
+  max-width: $max-width;
+  margin: auto;
+}
+
+$font-weight: (
+  'regular': 400,
+  'medium': 500,
+  'bold': 700,
+);
+
+h1 {
+}
+h2 {
+  font-size: 3rem;
+  font-family: $font-family;
+  font-weight: weight(regular);
+}
+
+@function weight($weight-name) {
+  @return map-get($font-weight, $weight-name);
+}

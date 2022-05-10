@@ -1,0 +1,15 @@
+@import '../../styles/base';
+
+.search-bar {
+  background-color: $lightGray;
+  border-radius: 30px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 1rem 3rem;
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+  }
+}
