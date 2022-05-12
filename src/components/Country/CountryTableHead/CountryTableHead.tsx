@@ -53,7 +53,7 @@ const CountryTableHead = (props: TableProps) => {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={'right'}
+            align={'center'}
             padding={'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >

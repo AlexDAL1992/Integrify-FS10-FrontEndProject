@@ -20,7 +20,7 @@ import { createCountry, Order, stableSort, getComparator } from '../utilities'
 
 import { Country } from '../../../types'
 import CountryTableHead from '../CountryTableHead/CountryTableHead'
-import CountryRow from '../CountryRow/CountryRow'
+// import CountryRow from '../CountryRow/CountryRow'
 
 import './country-table.scss'
 
@@ -166,14 +166,14 @@ const CountryTable = () => {
                 .map((row) => {
                   return (
                     <TableRow key={row.id}>
-                      <TableCell>
+                      <TableCell align="center">
                         <img src={row.flag} alt={row.name} />
                       </TableCell>
-                      <TableCell align="right">{row.name}</TableCell>
-                      <TableCell align="right">{row.languages}</TableCell>
-                      <TableCell align="right">{row.population}</TableCell>
-                      <TableCell align="right">{row.region}</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">{row.name}</TableCell>
+                      <TableCell align="center">{row.languages}</TableCell>
+                      <TableCell align="center">{row.population}</TableCell>
+                      <TableCell align="center">{row.region}</TableCell>
+                      <TableCell align="center">
                         <Button>ADD</Button>
                       </TableCell>
                     </TableRow>
