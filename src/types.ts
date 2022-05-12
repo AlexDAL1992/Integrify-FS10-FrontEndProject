@@ -46,12 +46,13 @@ export type UiActions = ToggleDialogAction
 
 // Country type and its action types
 export type Country = {
-  id: string
+  /* id: string
   flag: string
   name: string
   languages: string
   population: number
-  region: string
+  region: string */
+  [key: string]: any
 }
 
 export type FetchAllCountriesLoadingAction = {
@@ -61,7 +62,7 @@ export type FetchAllCountriesLoadingAction = {
 
 export type FetchAllCountriesSuccessAction = {
   type: typeof FETCH_ALL_COUNTRIES_SUCCESS
-  payload: any[]
+  payload: Country[]
 }
 
 export type FetchAllCountriesFailureAction = {
@@ -83,7 +84,7 @@ export type ProductState = {
 }
 
 export type CountryState = {
-  countries: any[]
+  countries: Country[]
   isLoading: boolean
   error: string
 }

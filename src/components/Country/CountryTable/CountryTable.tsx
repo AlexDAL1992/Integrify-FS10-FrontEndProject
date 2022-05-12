@@ -14,6 +14,7 @@ import {
   TablePagination,
   Paper,
   Button,
+  TableHead,
 } from '@mui/material'
 
 import { createCountry, Order, stableSort, getComparator } from '../utilities'
@@ -23,6 +24,7 @@ import CountryTableHead from '../CountryTableHead/CountryTableHead'
 // import CountryRow from '../CountryRow/CountryRow'
 
 import './country-table.scss'
+import { copyFileSync } from 'fs'
 
 const rows = [
   createCountry(
@@ -109,11 +111,15 @@ const CountryTable = () => {
   const isLoading = useSelector((state: AppState) => state.country.isLoading)
 
   const countryList = countries.map((country) => {
+    let languages = []
+    for (const lang in country.languages) {
+      languages.push(country.languages[lang])
+    }
     return {
       id: country.cca3,
       flag: country.flags.png,
       name: country.name.common,
-      languages: country.languages,
+      languages: languages,
       population: country.population,
       region: country.region,
     }
@@ -154,31 +160,62 @@ const CountryTable = () => {
             aria-labelledby="tableTitle"
             size={'medium'}
           >
-            <CountryTableHead
+            {/* <CountryTableHead
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-            />
-
+            /> */}
+            <TableHead>
+              <TableRow>
+                <TableCell align={'center'} padding={'normal'}>
+                  Flag
+                </TableCell>
+                <TableCell align={'center'} padding={'normal'}>
+                  Name
+                </TableCell>
+                <TableCell align={'center'} padding={'normal'}>
+                  Languages
+                </TableCell>
+                <TableCell align={'center'} padding={'normal'}>
+                  Population
+                </TableCell>
+                <TableCell align={'center'} padding={'normal'}>
+                  Region
+                </TableCell>
+                <TableCell />
+              </TableRow>
+            </TableHead>
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  return (
-                    <TableRow key={row.id}>
-                      <TableCell align="center">
-                        <img src={row.flag} alt={row.name} />
-                      </TableCell>
-                      <TableCell align="center">{row.name}</TableCell>
-                      <TableCell align="center">{row.languages}</TableCell>
-                      <TableCell align="center">{row.population}</TableCell>
-                      <TableCell align="center">{row.region}</TableCell>
-                      <TableCell align="center">
-                        <Button>ADD</Button>
-                      </TableCell>
-                    </TableRow>
-                  )
-                })}
+              {/*{stableSort(countryList, getComparator(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)*/}
+              {countryList.map((row) => {
+                return (
+                  <TableRow key={row.id}>
+                    <TableCell align={'center'} padding={'normal'}>
+                      <img src={row.flag} alt={row.name} />
+                    </TableCell>
+                    <TableCell align={'center'} padding={'normal'}>
+                      {row.name}
+                    </TableCell>
+                    <TableCell align={'center'} padding={'normal'}>
+                      <ul>
+                        {row.languages.map((lang) => (
+                          <li key={lang}>{lang}</li>
+                        ))}
+                      </ul>
+                    </TableCell>
+                    <TableCell align={'center'} padding={'normal'}>
+                      {row.population.toLocaleString('en-US')}
+                    </TableCell>
+                    <TableCell align={'center'} padding={'normal'}>
+                      {row.region}
+                    </TableCell>
+                    <TableCell align={'center'} padding={'normal'}>
+                      <Button>ADD</Button>
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
               {emptyRows > 0 && (
                 <TableRow
                   style={{
