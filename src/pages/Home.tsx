@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
@@ -8,6 +8,9 @@ import { addProduct, removeProduct } from '../redux/actions'
 
 import Navigation from '../components/Navigation/Navigation'
 import Theme from '../components/Theme/Theme'
+import CountryTable from '../components/Country/CountryTable/CountryTable'
+
+import { fetchAllCountries } from '../redux/actions'
 
 import '../styles/home.scss'
 
@@ -15,6 +18,12 @@ const names = ['Apple', 'Orange', 'Avocado', 'Banana', 'Cucumber', 'Carrot']
 
 export default function Home() {
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchAllCountries())
+  }, [dispatch])
+
+  /* const dispatch = useDispatch()
   const products = useSelector((state: AppState) => state.product.inCart)
 
   const handleAddProduct = () => {
@@ -24,13 +33,12 @@ export default function Home() {
       price: +(Math.random() * 10).toFixed(2),
     }
     dispatch(addProduct(product))
-  }
+  } */
 
   const [drawerState, setDrawerState] = useState(false)
   const handleDrawerState = (state: boolean) => {
     setDrawerState(state)
   }
-
   return (
     <div className="home">
       {/* <h1>Home page</h1>
@@ -47,6 +55,7 @@ export default function Home() {
 
       <Navigation drawerState={drawerState} onClick={handleDrawerState} />
       <Theme state={drawerState} onClick={handleDrawerState} />
+      <CountryTable />
     </div>
   )
 }

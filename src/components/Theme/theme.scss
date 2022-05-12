@@ -1,1 +1,41 @@
 @import '../../styles/base';
+
+.theme {
+  background-color: $lightGray;
+  padding-top: 20px;
+  &__drawer {
+    min-width: 200px;
+    .MuiDrawer-paperAnchorLeft {
+      right: auto;
+      left: 0;
+      width: 200px;
+    }
+  }
+
+  &__drawer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__drawer-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0 20px 0;
+    svg.MuiSvgIcon-root {
+      font-size: 2rem;
+      color: $lightBlack;
+    }
+  }
+
+  &__drawer-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    li {
+      padding-bottom: 10px;
+    }
+  }
+}

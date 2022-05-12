@@ -1,5 +1,5 @@
 import React from 'react'
-import Router from './Router'
+import Routes from './Routes'
 
 import { createTheme } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/styles'
@@ -34,7 +34,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <>
-        <Router />
+        <Routes />
       </>
     </ThemeProvider>
   )

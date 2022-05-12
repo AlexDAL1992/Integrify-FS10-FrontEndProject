@@ -4,7 +4,7 @@ export const REMOVE_PRODUCT = 'REMOVE_PRODUCT'
 export const TOGGLE_DIALOG = 'TOGGLE_DIALOG'
 
 // Country action types
-export const FETCH_ALL_COUNTRIES = 'FETCH_ALL_COUNTRIES'
+export const FETCH_ALL_COUNTRIES_LOADING = 'FETCH_ALL_COUNTRIES_LOADING'
 export const FETCH_ALL_COUNTRIES_SUCCESS = 'FETCH_ALL_COUNTRIES_SUCCESS'
 export const FETCH_ALL_COUNTRIES_FAILURE = 'FETCH_ALL_COUNTRIES_FAILURE'
 
@@ -49,19 +49,19 @@ export type Country = {
   id: string
   flag: string
   name: string
-  languages: string[]
+  languages: string
   population: number
   region: string
 }
 
-export type FetchAllCountriesAction = {
-  type: typeof FETCH_ALL_COUNTRIES
+export type FetchAllCountriesLoadingAction = {
+  type: typeof FETCH_ALL_COUNTRIES_LOADING
   payload?: string
 }
 
 export type FetchAllCountriesSuccessAction = {
   type: typeof FETCH_ALL_COUNTRIES_SUCCESS
-  payload: Country[]
+  payload: any[]
 }
 
 export type FetchAllCountriesFailureAction = {
@@ -73,7 +73,7 @@ export type FetchAllCountriesFailureAction = {
 export type ProductActions = AddProductAction | RemoveProductAction
 
 export type CountriesAction =
-  | FetchAllCountriesAction
+  | FetchAllCountriesLoadingAction
   | FetchAllCountriesSuccessAction
   | FetchAllCountriesFailureAction
 
@@ -83,7 +83,7 @@ export type ProductState = {
 }
 
 export type CountryState = {
-  countries: Country[]
+  countries: any[]
   isLoading: boolean
   error: string
 }

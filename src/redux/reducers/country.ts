@@ -1,5 +1,5 @@
 import {
-  FETCH_ALL_COUNTRIES,
+  FETCH_ALL_COUNTRIES_LOADING,
   FETCH_ALL_COUNTRIES_SUCCESS,
   FETCH_ALL_COUNTRIES_FAILURE,
   CountryState,
@@ -14,7 +14,7 @@ export default function country(
   action: any
 ) {
   switch (action.type) {
-  case FETCH_ALL_COUNTRIES:
+  case FETCH_ALL_COUNTRIES_LOADING:
     return {
       ...state,
       isLoading: true,
