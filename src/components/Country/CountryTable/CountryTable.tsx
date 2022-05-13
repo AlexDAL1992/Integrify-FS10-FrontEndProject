@@ -2,7 +2,7 @@
 import React from 'react'
 import { useState, useEffect, MouseEvent, ChangeEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchAllCountries } from '../../../redux/actions'
+import { addProduct, fetchAllCountries } from '../../../redux/actions'
 import { AppState } from '../../../types'
 import {
   Box,
@@ -20,7 +20,7 @@ import {
 import { createCountry, Order, stableSort, getComparator } from '../utilities'
 
 import { Country } from '../../../types'
-import CountryTableHead from '../CountryTableHead/CountryTableHead'
+// import CountryTableHead from '../CountryTableHead/CountryTableHead'
 // import CountryRow from '../CountryRow/CountryRow'
 
 import './country-table.scss'
@@ -110,7 +110,7 @@ const CountryTable = () => {
   const countries = useSelector((state: AppState) => state.country.countries)
   const isLoading = useSelector((state: AppState) => state.country.isLoading)
 
-  const countryList = countries.map((country) => {
+  /* const countryList = countries.map((country) => {
     let languages = []
     for (const lang in country.languages) {
       languages.push(country.languages[lang])
@@ -123,7 +123,7 @@ const CountryTable = () => {
       population: country.population,
       region: country.region,
     }
-  })
+  }) */
 
   const [order, setOrder] = useState<Order>('asc')
   const [orderBy, setOrderBy] = useState<keyof Country>('name')
@@ -188,34 +188,40 @@ const CountryTable = () => {
             <TableBody>
               {/*{stableSort(countryList, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)*/}
-              {countryList.map((row) => {
-                return (
-                  <TableRow key={row.id}>
-                    <TableCell align={'center'} padding={'normal'}>
-                      <img src={row.flag} alt={row.name} />
-                    </TableCell>
-                    <TableCell align={'center'} padding={'normal'}>
-                      {row.name}
-                    </TableCell>
-                    <TableCell align={'center'} padding={'normal'}>
-                      <ul>
-                        {row.languages.map((lang) => (
-                          <li key={lang}>{lang}</li>
-                        ))}
-                      </ul>
-                    </TableCell>
-                    <TableCell align={'center'} padding={'normal'}>
-                      {row.population.toLocaleString('en-US')}
-                    </TableCell>
-                    <TableCell align={'center'} padding={'normal'}>
-                      {row.region}
-                    </TableCell>
-                    <TableCell align={'center'} padding={'normal'}>
-                      <Button>ADD</Button>
-                    </TableCell>
-                  </TableRow>
-                )
-              })}
+              {isLoading && <p>Loading countries, please wait...</p>}
+
+              {!isLoading &&
+                countries &&
+                countries.map((row) => {
+                  return (
+                    <TableRow key={row.id}>
+                      <TableCell align={'center'} padding={'normal'}>
+                        <img src={row.flag} alt={row.name} />
+                      </TableCell>
+                      <TableCell align={'center'} padding={'normal'}>
+                        {row.name}
+                      </TableCell>
+                      <TableCell align={'center'} padding={'normal'}>
+                        <ul>
+                          {row.languages.map((lang: any) => (
+                            <li key={lang}>{lang}</li>
+                          ))}
+                        </ul>
+                      </TableCell>
+                      <TableCell align={'center'} padding={'normal'}>
+                        {row.population.toLocaleString('en-US')}
+                      </TableCell>
+                      <TableCell align={'center'} padding={'normal'}>
+                        {row.region}
+                      </TableCell>
+                      <TableCell align={'center'} padding={'normal'}>
+                        <Button onClick={() => dispatch(addProduct(row))}>
+                          ADD
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
               {emptyRows > 0 && (
                 <TableRow
                   style={{

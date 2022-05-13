@@ -1,0 +1,41 @@
+@import '../../styles/base';
+
+.cart {
+  &__menu {
+    .MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded {
+        width: 450px;
+        padding:1rem 2rem;
+        position: absolute;
+        top: 60px!important;
+
+        
+        
+    }
+  }
+  &__list{
+    h3{
+        color:$black;
+        size: 1rem;
+    }
+  }
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    img {
+      flex: 2;
+      max-width: 8rem;
+    }
+    h3 {
+        color: $lightBlack;
+      flex: 1;
+      align-content: center;
+    }
+    .cart__delete {
+        color: $lightBlack;
+      flex: 1;
+    }
+  }
+}
+  
+

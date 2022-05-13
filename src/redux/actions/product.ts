@@ -4,10 +4,10 @@ import {
   ADD_PRODUCT,
   REMOVE_PRODUCT,
   ProductActions,
-  Product,
+  Country,
 } from '../../types'
 
-export function addProduct(product: Product): ProductActions {
+export function addProduct(product: Country): ProductActions {
   return {
     type: ADD_PRODUCT,
     payload: {
@@ -16,7 +16,7 @@ export function addProduct(product: Product): ProductActions {
   }
 }
 
-export function removeProduct(product: Product): ProductActions {
+export function removeProduct(product: Country): ProductActions {
   return {
     type: REMOVE_PRODUCT,
     payload: {
@@ -29,8 +29,8 @@ export function removeProduct(product: Product): ProductActions {
 export function fetchProduct(productId: string) {
   return (dispatch: Dispatch) => {
     return fetch(`products/${productId}`)
-      .then(resp => resp.json())
-      .then(product => {
+      .then((resp) => resp.json())
+      .then((product) => {
         dispatch(addProduct(product))
       })
   }

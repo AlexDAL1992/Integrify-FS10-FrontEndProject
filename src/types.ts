@@ -24,14 +24,14 @@ export type Product = {
 export type AddProductAction = {
   type: typeof ADD_PRODUCT
   payload: {
-    product: Product
+    product: Country
   }
 }
 
 export type RemoveProductAction = {
   type: typeof REMOVE_PRODUCT
   payload: {
-    product: Product
+    product: Country
   }
 }
 
@@ -80,7 +80,7 @@ export type CountriesAction =
 
 // state types
 export type ProductState = {
-  inCart: Product[]
+  inCart: Country[]
 }
 
 export type CountryState = {
