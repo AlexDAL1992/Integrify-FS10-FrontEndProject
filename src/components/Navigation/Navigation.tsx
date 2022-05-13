@@ -12,14 +12,9 @@ import './navigation.scss'
 interface NavigationProps {
   drawerState: boolean
   onClick: Function
-  handleSearch: Function
 }
 
-const Navigation = ({
-  drawerState,
-  onClick,
-  handleSearch,
-}: NavigationProps) => {
+const Navigation = ({ drawerState, onClick }: NavigationProps) => {
   const onDrawerClick = () => {
     onClick(!drawerState)
   }
@@ -43,7 +38,7 @@ const Navigation = ({
         </div>
         <div className="navigation__content-title">Countries</div>
         <div className="navigation__content-search">
-          <Search handleSearch={handleSearch} />
+          <Search />
         </div>
         <button className="navigation__content-cart" onClick={handleClick}>
           <ShoppingCart />

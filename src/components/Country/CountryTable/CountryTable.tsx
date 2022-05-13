@@ -22,11 +22,7 @@ import CountryPagination from '../CountryPagination/CountryPagination'
 
 import './country-table.scss'
 
-type CountryTableProps = {
-  search: string
-}
-
-const CountryTable = ({ search }: CountryTableProps) => {
+const CountryTable = () => {
   // using redux to load data from api
   const dispatch = useDispatch()
   useEffect(() => {
@@ -37,7 +33,8 @@ const CountryTable = ({ search }: CountryTableProps) => {
   const isLoading = useSelector((state: AppState) => state.country.isLoading)
   const cart = useSelector((state: AppState) => state.product.inCart)
 
-  // using reac hooks to search for countries
+  // using react hooks to search for countries
+  const keyword = useSelector((state: AppState) => state.ui.searchKeyword)
   const [searchedCountries, setSearchedCountries] = useState(countries)
 
   useEffect(() => {
@@ -46,10 +43,10 @@ const CountryTable = ({ search }: CountryTableProps) => {
 
   useEffect(() => {
     const tempList = countries.filter((country) =>
-      country.name.toLowerCase().includes(search.toLowerCase())
+      country.name.toLowerCase().includes(keyword.toLowerCase())
     )
     setSearchedCountries(tempList)
-  }, [search, countries])
+  }, [keyword, countries])
 
   // using react hooks to sort countries in table
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')

@@ -16,6 +16,7 @@ const initState: AppState = {
   },
   ui: {
     dialogOpen: {},
+    searchKeyword: '',
   },
   country: {
     countries: [],

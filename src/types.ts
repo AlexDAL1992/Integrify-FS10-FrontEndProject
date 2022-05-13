@@ -8,6 +8,9 @@ export const FETCH_ALL_COUNTRIES_LOADING = 'FETCH_ALL_COUNTRIES_LOADING'
 export const FETCH_ALL_COUNTRIES_SUCCESS = 'FETCH_ALL_COUNTRIES_SUCCESS'
 export const FETCH_ALL_COUNTRIES_FAILURE = 'FETCH_ALL_COUNTRIES_FAILURE'
 
+// UI types
+export const UPDATE_SEARCH_KEYWORD = 'UPDATE_SEARCH_KEYWORD'
+
 // Enum
 export enum DialogType {
   SignIn = 'signIn',
@@ -35,6 +38,11 @@ export type RemoveProductAction = {
   }
 }
 
+export type SetSearchKeywordAction = {
+  type: typeof UPDATE_SEARCH_KEYWORD
+  payload: string
+}
+
 export type ToggleDialogAction = {
   type: typeof TOGGLE_DIALOG
   payload: {
@@ -42,7 +50,7 @@ export type ToggleDialogAction = {
   }
 }
 
-export type UiActions = ToggleDialogAction
+export type UiActions = ToggleDialogAction | SetSearchKeywordAction
 
 // Country type and its action types
 export type Country = {
@@ -91,6 +99,7 @@ export type CountryState = {
 
 // Using dynamic keys from an enum
 export type UiState = {
+  searchKeyword: string
   dialogOpen: {
     [key in DialogType]?: boolean
   }

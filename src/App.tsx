@@ -1,8 +1,15 @@
 import React from 'react'
 import Routes from './Routes'
 
+import { createContext, useState, useEffect } from 'react'
 import { createTheme } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/styles'
+import { useDispatch } from 'react-redux'
+
+import { fetchAllCountries } from './redux/actions'
+
+import Navigation from './components/Navigation/Navigation'
+import Theme from './components/Theme/Theme'
 
 const theme = createTheme({
   palette: {
@@ -31,11 +38,20 @@ const theme = createTheme({
 })
 
 export default function App() {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(fetchAllCountries())
+  }, [dispatch])
+
+  const [drawerState, setDrawerState] = useState(false)
+  const handleDrawerState = (state: boolean) => {
+    setDrawerState(state)
+  }
   return (
     <ThemeProvider theme={theme}>
-      <>
-        <Routes />
-      </>
+      <Navigation drawerState={drawerState} onClick={handleDrawerState} />
+      <Theme state={drawerState} onClick={handleDrawerState} />
+      <Routes />
     </ThemeProvider>
   )
 }

@@ -1,6 +1,12 @@
-import { TOGGLE_DIALOG, UiState, UiActions } from '../../types'
+import {
+  TOGGLE_DIALOG,
+  UPDATE_SEARCH_KEYWORD,
+  UiState,
+  UiActions,
+} from '../../types'
 
 const defaultState: UiState = {
+  searchKeyword: '',
   dialogOpen: {},
 }
 
@@ -16,6 +22,13 @@ export default function ui(
         ...state.dialogOpen,
         [action.payload.dialog]: !state.dialogOpen[action.payload.dialog],
       },
+    }
+  }
+
+  case UPDATE_SEARCH_KEYWORD: {
+    return {
+      ...state,
+      searchKeyword: action.payload,
     }
   }
 
