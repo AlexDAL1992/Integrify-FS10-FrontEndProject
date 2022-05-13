@@ -15,93 +15,21 @@ import {
   Paper,
   Button,
   TableHead,
+  TableSortLabel,
 } from '@mui/material'
-
+import _ from 'lodash'
 import { createCountry, Order, stableSort, getComparator } from '../utilities'
 
 import { Country } from '../../../types'
-// import CountryTableHead from '../CountryTableHead/CountryTableHead'
-// import CountryRow from '../CountryRow/CountryRow'
 
 import './country-table.scss'
 import { copyFileSync } from 'fs'
 
-const rows = [
-  createCountry(
-    'aaa',
-    'https://flagcdn.com/w320/gu.png',
-    'Afghanistan',
-    'Pashto, Uzbek, Turkmen',
-    27657145,
-    'Asia'
-  ),
-  createCountry(
-    'bbb',
-    'https://flagcdn.com/w320/gu.png',
-    'Albania',
-    'Albanian',
-    2886026,
-    'Europe'
-  ),
-  createCountry(
-    'ccc',
-    'https://flagcdn.com/w320/gu.png',
-    'Algeria',
-    'Arabic',
-    40400000,
-    'Africa'
-  ),
-  createCountry(
-    'ddd',
-    'https://flagcdn.com/w320/gu.png',
-    'Afghanistan',
-    'Pashto, Uzbek, Turkmen',
-    27657145,
-    'Asia'
-  ),
-  createCountry(
-    'eee',
-    'https://flagcdn.com/w320/gu.png',
-    'Albania',
-    'Albanian',
-    2886026,
-    'Europe'
-  ),
-  createCountry(
-    'fff',
-    'https://flagcdn.com/w320/gu.png',
-    'Algeria',
-    'Arabic',
-    40400000,
-    'Africa'
-  ),
-  createCountry(
-    'ggg',
-    'https://flagcdn.com/w320/gu.png',
-    'Afghanistan',
-    'Pashto, Uzbek, Turkmen',
-    27657145,
-    'Asia'
-  ),
-  createCountry(
-    'hhh',
-    'https://flagcdn.com/w320/gu.png',
-    'Albania',
-    'Albanian',
-    2886026,
-    'Europe'
-  ),
-  createCountry(
-    'iii',
-    'https://flagcdn.com/w320/gu.png',
-    'Algeria',
-    'Arabic',
-    40400000,
-    'Africa'
-  ),
-]
+type CountryTableProps = {
+  search: string
+}
 
-const CountryTable = () => {
+const CountryTable = ({ search }: CountryTableProps) => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchAllCountries())
@@ -109,35 +37,59 @@ const CountryTable = () => {
 
   const countries = useSelector((state: AppState) => state.country.countries)
   const isLoading = useSelector((state: AppState) => state.country.isLoading)
-
-  /* const countryList = countries.map((country) => {
-    let languages = []
-    for (const lang in country.languages) {
-      languages.push(country.languages[lang])
-    }
-    return {
-      id: country.cca3,
-      flag: country.flags.png,
-      name: country.name.common,
-      languages: languages,
-      population: country.population,
-      region: country.region,
-    }
-  }) */
+  const cart = useSelector((state: AppState) => state.product.inCart)
 
   const [order, setOrder] = useState<Order>('asc')
   const [orderBy, setOrderBy] = useState<keyof Country>('name')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
 
-  const handleRequestSort = (
-    event: MouseEvent<unknown>,
-    property: keyof Country
-  ) => {
-    const isAsc = orderBy === property && order === 'asc'
-    setOrder(isAsc ? 'desc' : 'asc')
-    setOrderBy(property)
+  const [searchedCountries, setSearchedCountries] = useState(countries)
+
+  useEffect(() => {
+    setSearchedCountries(countries)
+  }, [countries])
+
+  useEffect(() => {
+    const tempList = countries.filter((country) =>
+      country.name.toLowerCase().includes(search.toLowerCase())
+    )
+    setSearchedCountries(tempList)
+  }, [search, countries])
+
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+
+  const handleSortByName = ({ target }: MouseEvent<HTMLElement>) => {
+    if (sortOrder === 'asc') {
+      setSortOrder('desc')
+    } else if (sortOrder === 'desc') {
+      setSortOrder('asc')
+    }
+    const temp = _.orderBy(searchedCountries, ['name'], [sortOrder]) as []
+    setSearchedCountries(temp)
   }
+
+  const handleSortByPopulation = ({ target }: MouseEvent<HTMLElement>) => {
+    if (sortOrder === 'asc') {
+      setSortOrder('desc')
+    } else if (sortOrder === 'desc') {
+      setSortOrder('asc')
+    }
+    const temp = _.orderBy(searchedCountries, ['population'], [sortOrder]) as []
+    setSearchedCountries(temp)
+  }
+
+  const handleSortByRegion = ({ target }: MouseEvent<HTMLElement>) => {
+    if (sortOrder === 'asc') {
+      setSortOrder('desc')
+    } else if (sortOrder === 'desc') {
+      setSortOrder('asc')
+    }
+    const temp = _.orderBy(searchedCountries, ['region'], [sortOrder]) as []
+    setSearchedCountries(temp)
+  }
+
+  /* 
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
@@ -146,10 +98,12 @@ const CountryTable = () => {
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
-  }
+  } */
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
+    page > 0
+      ? Math.max(0, (1 + page) * rowsPerPage - searchedCountries.length)
+      : 0
 
   return (
     <Box className="table" sx={{ width: '80%' }}>
@@ -171,28 +125,41 @@ const CountryTable = () => {
                   Flag
                 </TableCell>
                 <TableCell align={'center'} padding={'normal'}>
-                  Name
+                  <TableSortLabel
+                    direction={sortOrder}
+                    onClick={handleSortByName}
+                  >
+                    Name
+                  </TableSortLabel>
                 </TableCell>
                 <TableCell align={'center'} padding={'normal'}>
                   Languages
                 </TableCell>
                 <TableCell align={'center'} padding={'normal'}>
-                  Population
+                  <TableSortLabel
+                    direction={sortOrder}
+                    onClick={handleSortByPopulation}
+                  >
+                    Population
+                  </TableSortLabel>
                 </TableCell>
                 <TableCell align={'center'} padding={'normal'}>
-                  Region
+                  <TableSortLabel
+                    direction={sortOrder}
+                    onClick={handleSortByRegion}
+                  >
+                    Region
+                  </TableSortLabel>
                 </TableCell>
                 <TableCell />
               </TableRow>
             </TableHead>
             <TableBody>
-              {/*{stableSort(countryList, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)*/}
               {isLoading && <p>Loading countries, please wait...</p>}
 
               {!isLoading &&
-                countries &&
-                countries.map((row) => {
+                searchedCountries &&
+                searchedCountries.map((row) => {
                   return (
                     <TableRow key={row.id}>
                       <TableCell align={'center'} padding={'normal'}>
@@ -215,13 +182,17 @@ const CountryTable = () => {
                         {row.region}
                       </TableCell>
                       <TableCell align={'center'} padding={'normal'}>
-                        <Button onClick={() => dispatch(addProduct(row))}>
+                        <Button
+                          disabled={cart.includes(row)}
+                          onClick={() => dispatch(addProduct(row))}
+                        >
                           ADD
                         </Button>
                       </TableCell>
                     </TableRow>
                   )
                 })}
+
               {emptyRows > 0 && (
                 <TableRow
                   style={{
@@ -234,15 +205,15 @@ const CountryTable = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
+        {/* <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={searchedCountries.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+        /> */}
       </Paper>
     </Box>
   )
