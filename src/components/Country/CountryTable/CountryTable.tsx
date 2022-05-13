@@ -18,18 +18,16 @@ import {
   TableSortLabel,
 } from '@mui/material'
 import _ from 'lodash'
-import { createCountry, Order, stableSort, getComparator } from '../utilities'
-
-import { Country } from '../../../types'
+import CountryPagination from '../CountryPagination/CountryPagination'
 
 import './country-table.scss'
-import { copyFileSync } from 'fs'
 
 type CountryTableProps = {
   search: string
 }
 
 const CountryTable = ({ search }: CountryTableProps) => {
+  // using redux to load data from api
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchAllCountries())
@@ -39,11 +37,7 @@ const CountryTable = ({ search }: CountryTableProps) => {
   const isLoading = useSelector((state: AppState) => state.country.isLoading)
   const cart = useSelector((state: AppState) => state.product.inCart)
 
-  const [order, setOrder] = useState<Order>('asc')
-  const [orderBy, setOrderBy] = useState<keyof Country>('name')
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(5)
-
+  // using reac hooks to search for countries
   const [searchedCountries, setSearchedCountries] = useState(countries)
 
   useEffect(() => {
@@ -57,6 +51,7 @@ const CountryTable = ({ search }: CountryTableProps) => {
     setSearchedCountries(tempList)
   }, [search, countries])
 
+  // using react hooks to sort countries in table
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
 
   const handleSortByName = ({ target }: MouseEvent<HTMLElement>) => {
@@ -66,7 +61,7 @@ const CountryTable = ({ search }: CountryTableProps) => {
       setSortOrder('asc')
     }
     const temp = _.orderBy(searchedCountries, ['name'], [sortOrder]) as []
-    setSearchedCountries(temp)
+    setPaginatedList(temp)
   }
 
   const handleSortByPopulation = ({ target }: MouseEvent<HTMLElement>) => {
@@ -76,7 +71,7 @@ const CountryTable = ({ search }: CountryTableProps) => {
       setSortOrder('asc')
     }
     const temp = _.orderBy(searchedCountries, ['population'], [sortOrder]) as []
-    setSearchedCountries(temp)
+    setPaginatedList(temp)
   }
 
   const handleSortByRegion = ({ target }: MouseEvent<HTMLElement>) => {
@@ -86,10 +81,14 @@ const CountryTable = ({ search }: CountryTableProps) => {
       setSortOrder('asc')
     }
     const temp = _.orderBy(searchedCountries, ['region'], [sortOrder]) as []
-    setSearchedCountries(temp)
+    setPaginatedList(temp)
   }
 
-  /* 
+  // using react hooks to set pagination for the table
+
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
+  const [paginatedList, setPaginatedList] = useState(countries)
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
@@ -98,7 +97,15 @@ const CountryTable = ({ search }: CountryTableProps) => {
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
-  } */
+  }
+
+  useEffect(() => {
+    const paginated = searchedCountries.slice(
+      page * rowsPerPage,
+      (page + 1) * rowsPerPage
+    )
+    setPaginatedList(paginated)
+  }, [page, rowsPerPage, searchedCountries])
 
   const emptyRows =
     page > 0
@@ -114,11 +121,6 @@ const CountryTable = ({ search }: CountryTableProps) => {
             aria-labelledby="tableTitle"
             size={'medium'}
           >
-            {/* <CountryTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            /> */}
             <TableHead>
               <TableRow>
                 <TableCell align={'center'} padding={'normal'}>
@@ -155,11 +157,17 @@ const CountryTable = ({ search }: CountryTableProps) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {isLoading && <p>Loading countries, please wait...</p>}
+              {isLoading && (
+                <TableRow>
+                  <TableCell colSpan={6}>
+                    <p>Loading countries, please wait...</p>
+                  </TableCell>
+                </TableRow>
+              )}
 
               {!isLoading &&
-                searchedCountries &&
-                searchedCountries.map((row) => {
+                paginatedList &&
+                paginatedList.map((row) => {
                   return (
                     <TableRow key={row.id}>
                       <TableCell align={'center'} padding={'normal'}>
@@ -205,15 +213,22 @@ const CountryTable = ({ search }: CountryTableProps) => {
             </TableBody>
           </Table>
         </TableContainer>
-        {/* <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+          colSpan={3}
           count={searchedCountries.length}
           rowsPerPage={rowsPerPage}
           page={page}
+          SelectProps={{
+            inputProps: {
+              'aria-label': 'rows per page',
+            },
+            native: true,
+          }}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-        /> */}
+          ActionsComponent={CountryPagination}
+        />
       </Paper>
     </Box>
   )

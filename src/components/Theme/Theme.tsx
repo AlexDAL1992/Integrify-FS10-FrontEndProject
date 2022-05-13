@@ -1,5 +1,5 @@
 import React from 'react'
-import { Drawer } from '@mui/material'
+import { Button, Drawer } from '@mui/material'
 import { Close } from '@mui/icons-material'
 
 import './theme.scss'
@@ -20,12 +20,16 @@ const Theme = ({ state, onClick }: DrawerProps) => {
         <div className="theme__drawer-content">
           <div className="theme__drawer-title">
             <Close onClick={onDrawerClick} />
-            <h3>Themes</h3>
+            <h3>THEMES</h3>
           </div>
           <div className="theme__drawer-menu">
             <ul>
-              <li>Light</li>
-              <li>Dark</li>
+              <li>
+                <Button>Light</Button>
+              </li>
+              <li>
+                <Button>Dark</Button>
+              </li>
             </ul>
           </div>
         </div>
