@@ -36,11 +36,11 @@ export function fetchAllCountries() {
         const countryList = countries.map(
           (country: {
             languages: { [x: string]: any }
-            cca3: any
-            flags: { png: any }
-            name: { common: any }
-            population: any
-            region: any
+            cca3: string
+            flags: { png: string }
+            name: { common: string }
+            population: number
+            region: string
           }) => {
             let languages = []
             for (const lang in country.languages) {

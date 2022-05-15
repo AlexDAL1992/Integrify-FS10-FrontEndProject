@@ -54,12 +54,6 @@ export type UiActions = ToggleDialogAction | SetSearchKeywordAction
 
 // Country type and its action types
 export type Country = {
-  /* id: string
-  flag: string
-  name: string
-  languages: string
-  population: number
-  region: string */
   [key: string]: any
 }
 

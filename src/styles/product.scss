@@ -1,0 +1,18 @@
+@import './base';
+
+.country-page {
+    display: flex;
+    flex-direction: column;
+    &__detail{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        h2{
+            margin: 2rem 0;
+        }
+        h3 {
+            margin: 0.3rem 0;
+        }
+    }
+}

@@ -1,5 +1,6 @@
 // import React from 'react'
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { useState, useEffect, MouseEvent, ChangeEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addProduct, fetchAllCountries } from '../../../redux/actions'
@@ -171,7 +172,7 @@ const CountryTable = () => {
                         <img src={row.flag} alt={row.name} />
                       </TableCell>
                       <TableCell align={'center'} padding={'normal'}>
-                        {row.name}
+                        <Link to={`/products/${row.id}`}>{row.name}</Link>
                       </TableCell>
                       <TableCell align={'center'} padding={'normal'}>
                         <ul>
